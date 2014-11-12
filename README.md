@@ -1,4 +1,1 @@
-dfw-log
-=======
-
-DETAIL Framework library for logging
+# DETAIL Framework library for logging
