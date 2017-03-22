@@ -2,26 +2,41 @@
 
 namespace Detail\Log\Service;
 
-use Psr\Log\LogLevel;
+use Psr\Log;
 
 trait LoggerAwareTrait
 {
-    use \Psr\Log\LoggerAwareTrait;
+    use Log\LoggerAwareTrait;
 
+    /**
+     * @var string
+     */
     private $loggerPrefix = null;
 
-    protected function log($message, $level = LogLevel::DEBUG, array $context = array())
+    /**
+     * @param string $message
+     * @param string $level
+     * @param array $context
+     */
+    protected function log($message, $level = Log\LogLevel::DEBUG, array $context = array())
     {
         if ($this->logger !== null) {
             $this->logger->log($level, $this->getLoggerPrefix() . $message, $context);
         }
     }
 
+    /**
+     * @param string $prefix
+     */
     protected function setLoggerPrefix($prefix)
     {
         $this->loggerPrefix = $prefix;
     }
 
+    /**
+     * @param boolean $formatted
+     * @return string
+     */
     protected function getLoggerPrefix($formatted = true)
     {
         if ($this->loggerPrefix === null) {
