@@ -50,5 +50,6 @@
             "build.properties",
             "composer.phar"
         ]
-    }
+    },
+    "abandoned": true
 }
