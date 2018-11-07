@@ -17,11 +17,16 @@ trait LoggerAwareTrait
      * @param string $message
      * @param string $level
      * @param array $context
+     * @param string|null $prefix
      */
-    protected function log($message, $level = Log\LogLevel::DEBUG, array $context = array())
+    protected function log($message, $level = Log\LogLevel::DEBUG, array $context = [], $prefix = null)
     {
         if ($this->logger !== null) {
-            $this->logger->log($level, $this->getLoggerPrefix() . $message, $context);
+            if ($prefix === null) {
+                $prefix = $this->getLoggerPrefix();
+            }
+
+            $this->logger->log($level, sprintf('[%s] %s', $prefix, $message), $context);
         }
     }
 
@@ -34,10 +39,9 @@ trait LoggerAwareTrait
     }
 
     /**
-     * @param boolean $formatted
      * @return string
      */
-    protected function getLoggerPrefix($formatted = true)
+    protected function getLoggerPrefix()
     {
         if ($this->loggerPrefix === null) {
             $classNameParts = explode('\\', get_class($this));
@@ -45,6 +49,6 @@ trait LoggerAwareTrait
             $this->loggerPrefix = $classNameParts[count($classNameParts) - 1];
         }
 
-        return ($formatted === false) ? $this->loggerPrefix : sprintf('[%s] ', $this->loggerPrefix);
+        return $this->loggerPrefix;
     }
 }
